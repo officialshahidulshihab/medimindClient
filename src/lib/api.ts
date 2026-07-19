@@ -1,21 +1,22 @@
-import axios from "axios"
+import axios from "axios";
+import { getApiBaseUrl } from "./runtime-config";
 
 const api = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api`,
+  baseURL: getApiBaseUrl(),
   withCredentials: true,
   headers: { "Content-Type": "application/json" },
-})
+});
 
 api.interceptors.response.use(
   (res) => res,
   (error) => {
     if (error.response?.status === 401) {
       if (typeof window !== "undefined") {
-        window.location.href = "/auth/login"
+        window.location.href = "/auth/login";
       }
     }
-    return Promise.reject(error)
-  }
-)
+    return Promise.reject(error);
+  },
+);
 
-export default api
+export default api;

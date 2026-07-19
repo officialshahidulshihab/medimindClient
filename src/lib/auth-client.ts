@@ -1,19 +1,20 @@
-"use client"
-import { createAuthClient } from "better-auth/react"
-import { inferAdditionalFields } from "better-auth/client/plugins"
+"use client";
+import { createAuthClient } from "better-auth/react";
+import { inferAdditionalFields } from "better-auth/client/plugins";
+import { getAuthBaseUrl } from "./runtime-config";
 
 export const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:5000",
+  baseURL: getAuthBaseUrl(),
   plugins: [
     inferAdditionalFields({
       user: {
         role: {
-          type: 'string',
-          defaultValue: 'patient',
-        }
-      }
-    })
-  ]
-})
+          type: "string",
+          defaultValue: "patient",
+        },
+      },
+    }),
+  ],
+});
 
-export const { signIn, signUp, signOut, useSession } = authClient
+export const { signIn, signUp, signOut, useSession } = authClient;
