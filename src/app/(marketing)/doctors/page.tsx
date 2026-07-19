@@ -13,7 +13,7 @@ import { useToast } from '@/components/ui/toast';
 // Fetch function
 const fetchDoctors = async (params: {
   search: string
-  location: string  
+  location: string
   consultationMode: string
   page: number
 }): Promise<DoctorsResponse> => {
@@ -48,15 +48,15 @@ export default function DoctorsDirectory() {
 
   const { data: doctorsData, isLoading, isError, error } = useQuery({
     queryKey: ["doctors", debouncedSearch, location, consultationMode, page],
-    queryFn: () => fetchDoctors({ 
-      search: debouncedSearch, 
-      location, 
-      consultationMode, 
-      page 
+    queryFn: () => fetchDoctors({
+      search: debouncedSearch,
+      location,
+      consultationMode,
+      page
     })
   });
-  
- 
+
+
 
   const doctors = doctorsData?.doctors ?? [];
   const total = doctorsData?.pagination?.total ?? 0;
@@ -69,8 +69,8 @@ export default function DoctorsDirectory() {
     },
     enabled: !!session
   });
-  
-  const bookmarkedIds = bookmarksRes?.map((b: any) => 
+
+  const bookmarkedIds = bookmarksRes?.map((b: any) =>
     typeof b.doctorId === 'object' ? b.doctorId._id : b.doctorId
   ) || [];
 
@@ -115,7 +115,7 @@ export default function DoctorsDirectory() {
 
           {/* Filter Bar */}
           <div className="mt-[24px] flex flex-col md:flex-row gap-3 flex-wrap">
-            
+
             {/* Search Input */}
             <div className="relative flex-grow min-w-[250px]">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2" size={16} color="var(--text-disabled)" />
@@ -130,7 +130,7 @@ export default function DoctorsDirectory() {
 
             {/* Location Select */}
             <div className="w-full md:w-[200px]">
-              <select 
+              <select
                 className="input-field w-full"
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234D607F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
@@ -155,7 +155,7 @@ export default function DoctorsDirectory() {
 
             {/* Consultation Select */}
             <div className="w-full md:w-[180px]">
-              <select 
+              <select
                 className="input-field w-full"
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234D607F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
@@ -178,7 +178,7 @@ export default function DoctorsDirectory() {
 
             {/* Sort Select */}
             <div className="w-full md:w-[160px]">
-              <select 
+              <select
                 className="input-field w-full"
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234D607F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
@@ -221,9 +221,9 @@ export default function DoctorsDirectory() {
                 </div>
               ) : (
                 doctors.map((doctor) => (
-                  <DoctorCard 
-                    key={doctor._id} 
-                    doctor={doctor} 
+                  <DoctorCard
+                    key={doctor._id}
+                    doctor={doctor}
                     isBookmarked={bookmarkedIds.includes(doctor._id)}
                     onBookmarkToggle={(e) => handleBookmarkToggle(e, doctor._id)}
                   />
@@ -242,7 +242,7 @@ export default function DoctorsDirectory() {
                 >
                   <ChevronLeft size={16} /> Prev
                 </button>
-                
+
                 <div className="flex gap-2">
                   {[...Array(doctorsData.pagination.pages)].map((_, i) => {
                     const p = i + 1;
