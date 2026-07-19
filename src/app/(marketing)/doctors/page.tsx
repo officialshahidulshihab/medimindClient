@@ -56,7 +56,7 @@ export default function DoctorsDirectory() {
     })
   });
   
-  console.log("DEBUG doctors:", { doctorsData, isLoading, isError, error })
+ 
 
   const doctors = doctorsData?.doctors ?? [];
   const total = doctorsData?.pagination?.total ?? 0;
