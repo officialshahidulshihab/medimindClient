@@ -1,26 +1,175 @@
 @import "tailwindcss";
+@config "../../tailwind.config.ts";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Backgrounds */
+    --bg-page:      #0B1426;
+    --bg-surface:   #111E36;
+    --bg-elevated:  #162040;
+
+    /* Brand */
+    --teal:         #00C9B1;
+    --teal-glow:    rgba(0, 201, 177, 0.15);
+    --teal-dim:     rgba(0, 201, 177, 0.10);
+
+    /* Text */
+    --text-primary:   #FFFFFF;
+    --text-muted:     #A8B4CC;
+    --text-disabled:  #4D607F;
+
+    /* Semantic */
+    --danger:   #FF4D6A;
+    --warning:  #FFB545;
+    --success:  #00D68F;
+    --info:     #4D94FF;
+
+    /* Border */
+    --border:         #4D607F;
+    --border-opacity: rgba(77, 96, 127, 0.3);
+
+    /* Shadows */
+    --shadow-card:     0 4px 16px rgba(0,0,0,0.5);
+    --shadow-elevated: 0 8px 32px rgba(0,0,0,0.6);
+    --shadow-ai-glow:  0 0 24px rgba(0,201,177,0.2), 
+                       0 0 48px rgba(0,201,177,0.1);
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-inter);
+}
+
+/* AI GLOW BORDER — use this class on ALL AI-powered components */
+.ai-glow-border {
+  position: relative;
+  border-radius: 12px;
+}
+.ai-glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 13px;
+  padding: 1px;
+  background: linear-gradient(135deg, #00C9B1, #4D94FF, #00C9B1);
+  background-size: 200% 200%;
+  animation: aiGlow 3s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+@keyframes aiGlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* TEAL PULSE DOT */
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--teal);
+  border-radius: 9999px;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.3); opacity: 0.5; }
+}
+
+/* SHIMMER SKELETON */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-elevated) 25%,
+    #1E2D4A 50%,
+    var(--bg-elevated) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* CARD BASE */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-opacity);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  transition: all 200ms ease-out;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--teal);
+  box-shadow: var(--shadow-ai-glow);
+}
+
+/* BUTTONS */
+.btn-primary {
+  background: var(--teal);
+  color: #0B1426;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 200ms ease-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+}
+.btn-primary:hover  { background: #00B5A0; }
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--teal);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid var(--teal);
+  cursor: pointer;
+  transition: all 200ms ease-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+}
+.btn-ghost:hover  { background: var(--teal-dim); }
+.btn-ghost:active { transform: scale(0.97); }
+
+/* INPUT */
+.input-field {
+  pointer-events: auto;
+  cursor: text;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  padding: 12px 16px;
+  font-size: 15px;
+  width: 100%;
+  transition: border-color 200ms ease-out, box-shadow 200ms ease-out;
+  outline: none;
+}
+.input-field::placeholder { color: var(--text-disabled); }
+.input-field:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 2px rgba(0,201,177,0.1);
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-6px); }
 }
