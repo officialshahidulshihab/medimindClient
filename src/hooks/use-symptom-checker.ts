@@ -124,13 +124,11 @@ export function useSymptomChecker() {
     if (urgencyMatch && currentSessionId) {
       const urgencyScore = parseInt(urgencyMatch[1]);
       const recommendedSpecialty = specialty;
-      const API_BASE = process.env.NEXT_PUBLIC_API_URL
-        ? process.env.NEXT_PUBLIC_API_URL.replace(/\/api\/?$/, "")
-        : "https://medimind-server.vercel.app";
+      const API_URL = typeof window !== "undefined" ? "/api" : (process.env.NEXT_PUBLIC_API_URL || "https://medimind-server.vercel.app/api");
 
       try {
         const res = await fetch(
-          `${API_BASE}/api/symptom-sessions/${currentSessionId}/complete`,
+          `${API_URL}/symptom-sessions/${currentSessionId}/complete`,
           {
             method: "PATCH",
             credentials: "include",

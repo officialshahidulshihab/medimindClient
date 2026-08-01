@@ -61,7 +61,7 @@ export default function RegisterPage() {
   async function handleGoogle() {
     await signIn.social({
       provider: "google",
-      callbackURL: "http://localhost:3000/dashboard",
+      callbackURL: "/dashboard",
     })
   }
 
