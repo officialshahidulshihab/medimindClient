@@ -3,14 +3,14 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useSession } from '@/lib/auth-client';
+import { useSession, signOut } from '@/lib/auth-client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import AuthGuard from '@/components/auth-guard';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
-import { Check, X, MapPin, Star, Calendar, Search, Stethoscope, ArrowLeft, Settings } from 'lucide-react';
+import { Check, X, MapPin, Star, Calendar, Search, Stethoscope, ArrowLeft, Settings, LogOut } from 'lucide-react';
 import { useToast } from '@/components/ui/toast';
 
 export default function DoctorDashboardPage() {
@@ -308,6 +308,7 @@ function DoctorSetupFlow({ onLinked }: { onLinked: () => void }) {
 // ─────────────────────────────────────────────
 function AppointmentsDashboard({ doctorProfile }: { doctorProfile: any }) {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const [filter, setFilter] = useState<'All' | 'pending' | 'confirmed' | 'cancelled'>('All');
   const toast = useToast();
 
@@ -498,6 +499,24 @@ function AppointmentsDashboard({ doctorProfile }: { doctorProfile: any }) {
               </div>
             </div>
           </Link>
+
+          <button
+            onClick={async () => {
+              await signOut();
+              router.push('/auth/login');
+            }}
+            className="w-full flex items-center justify-between bg-[#1A2942] rounded-xl border border-[#64748B]/20 p-6 hover:border-red-500 transition-colors group cursor-pointer text-left"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-[#0F1A2E] flex items-center justify-center text-[#64748B] group-hover:text-red-500 transition-colors">
+                <LogOut size={24} />
+              </div>
+              <div>
+                <h3 className="text-white font-bold">Sign Out</h3>
+                <p className="text-[#64748B] text-sm">Log out of your account</p>
+              </div>
+            </div>
+          </button>
         </div>
       </div>
     </div>
